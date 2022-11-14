@@ -173,7 +173,7 @@ TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
 	c = b- a;
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
-			EXPECT_EQ(c[i][j], -1);
+			EXPECT_EQ(c[i][j], 1);
 		}
 	}
 }

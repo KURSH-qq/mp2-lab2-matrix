@@ -50,6 +50,7 @@ public:
   TDynamicVector(TDynamicVector&& v) noexcept
   {
       pMem = nullptr;
+      sz = 0;
       swap(*this, v);
 
   }
@@ -71,8 +72,12 @@ public:
   }
   TDynamicVector& operator=(TDynamicVector&& v) noexcept
   {
+      delete[] pMem;
+      pMem = nullptr;
+      sz = 0;
       swap(*this, v);
       return *this;
+
   }
 
   size_t size() const noexcept { return sz; }
@@ -173,11 +178,12 @@ public:
       }
       return result;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) 
   {
-      if (sz != v.sz) {
+      if (sz != v.sz) 
+      {
           throw exception("different sizes");
-        }
+      }
       T result = NULL;
       for (int i = 0; i < sz; i++) {
           result += pMem[i] * v.pMem[i];
@@ -226,7 +232,13 @@ public:
     for (size_t i = 0; i < sz; i++)
       pMem[i] = TDynamicVector<T>(sz);
   }
-
+  T& at(int a, int b) 
+  {
+      if (a <= 0) || (b <= 0) || (a > MAX_MATRIX_SIZE) || (b > MAX_MATRIX_SIZE) {
+          throw exception("wrong index");
+      }
+      return pMem[a][b];
+  }
   using TDynamicVector<TDynamicVector<T>>::operator[];
   using TDynamicVector<TDynamicVector<T>>::size;
   using TDynamicVector<TDynamicVector<T>>::at;
@@ -255,7 +267,7 @@ public:
   {
       TDynamicVector<T> result(sz);
       for (int i = 0; i < sz; i++) {
-          result.pMem[i] = pMem[i] * v;
+          result[i] = pMem[i] * v;
       }
       return result;
   }
@@ -279,7 +291,7 @@ public:
       }
       TDynamicMatrix result(sz);
       for (int i = 0; i < sz; i++) {
-          result.pMem[i] = m.pMem[i] - pMem[i];
+          result.pMem[i] = pMem[i] - m.pMem[i];
       }
       return result;
   }
@@ -304,7 +316,7 @@ public:
   {
       for (int i = 0; i < v.sz; i++) {
           for (int j = 0; j < v.sz; j++) {
-              istr >> pMem[i][j];
+              istr >> v.pMem[i][j];
           }
       }
       return istr;
