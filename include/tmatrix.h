@@ -324,7 +324,7 @@ public:
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
       for (int i = 0; i < v.sz; i++) {
-          ostr << v.pMem[i] << "\n";
+          ostr << v.pMem[i];
       }
       return ostr;
   }
